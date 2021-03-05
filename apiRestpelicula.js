@@ -53,32 +53,29 @@ class Movie {
 }
 
 
-let movie1 = new Movie("Vengadores",2018,"EEUU","ingles",true, "Tony Stark","Disney", "accion")
-let movie2 = new Movie("Raya y el dragon", 2021,"EEUU", "ingles",false, "Raya", "Disney", "animacion")
-let movie3 = new Movie("La trinchera infinita", 2019, "España",false, "Higinio","Netflix", "drama")
-let movie4 = new Movie("Guns Akimbo", 2019, "Nueva Zelanda","ingles", false, "Miles", "Amazon", "accion")
+//let movie1 = new Movie("Vengadores",2018,"EEUU","ingles",true, "Tony Stark","Disney", "accion")
+//let movie2 = new Movie("Raya y el dragon", 2021,"EEUU", "ingles",false, "Raya", "Disney", "animacion")
+//let movie3 = new Movie("La trinchera infinita", 2019, "España",false, "Higinio","Netflix", "drama")
+//let movie4 = new Movie("Guns Akimbo", 2019, "Nueva Zelanda","ingles", false, "Miles", "Amazon", "accion")
 let movie = null;
 
 let respuesta;
 app.get("/pelicula", function(request, response){
-
-    //si pelicula es distinto de null quiero que me muestre la película que haya
 
     if( movie!=null){
          respuesta = movie;
     }
     else{
         respuesta = {
-            error = true,
-            codigo = 200,
-            mensaje = "No hay pelicula",
+            error:true,
+            codigo: 200,
+            mensaje: "No hay pelicula"
         }
     }
   response.send(respuesta);
 });
 
 app.post("/pelicula", function(request, response){
-    // post crea pelis, así que mi condicion será que si pelicula es igual a null que me deje introducir los parametros.
 
     if(movie === null) {
 
@@ -86,30 +83,39 @@ app.post("/pelicula", function(request, response){
             title : request.body.title,
             releaseYear: request.body.releaseYear,
             nationality: request.body.nationality,
+            language: request.body.language,
             isMCU: request.body.isMCU,
             mainCharacterName: request.body.mainCharacterName,
             distributor: request.body.distributor,
             genre: request.body.genre
         }
         respuesta = {
-             error = true,
-             codigo = 200,
-             mensaje = "Pelicula creada"
+             error: true,
+             codigo: 200,
+             mensaje: "Pelicula creada",
+             resultado: movie,
         }
-    } else{
+    } 
+    else{
         respuesta = {
-            error = true,
-            codigo = 200,
-            mensaje = "Esta peli ya existe"
+            error:true,
+            codigo: 200,
+            mensaje: "Esta peli ya existe",
+            resultado: null
         }
     }
     response.send(respuesta);
 });
 
-app.put("/pelicula", function(request,response){
+
+app.put("/pelicula", 
+
+function(request,response){
 
     if(movie = !null){
+
         if(request.body.title != null){
+
             movie.title = request.body.title,
             respuesta = {
                 error: true,
@@ -120,60 +126,73 @@ app.put("/pelicula", function(request,response){
         }
 
         if(request.body.releaseYear != null){
+
             movie.releaseYear = request.body.releaseYear,
             respuesta = {
                 error: true,
                 codigo: 200,
                 mensaje: "La pelicula ha sido actualizada",
-                resultado: movie,
+                resultado: movie
             }
         }
 
         if(request.body.nationality != null){
+
             movie.nationality = request.body.nationality,
             respuesta = {
                 error: true,
                 codigo: 200,
                 mensaje: "La pelicula ha sido actualizada",
-                resultado: movie,
+                resultado: movie
+            }
+        }
+
+        if(request.body.language != null){
+
+            movie.language = request.body.language,
+            respuesta = {
+                error: true,
+                codigo: 200,
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
             }
         }
 
         if(request.body.isMCU != null){
-            movie.isMCU = request.body.nationality,
+            movie.isMCU = request.body.isMCU,
             respuesta = {
-                error = true,
-                codigo = 200,
+                error: true,
+                codigo: 200,
                 mensaje: "La pelicula ha sido actualizada",
-                resultado: movie,
+                resultado: movie
             }
         }
 
         if(request.body.mainCharacterName != null){
             movie.mainCharacterName = request.body.mainCharacterName,
             respuesta = {
-                error = true,
-                codigo = 200,
+                error: true,
+                codigo: 200,
                 mensaje: "La pelicula ha sido actualizada",
-                resultado: movie,
+                resultado: movie
             }
         }
 
         if(request.body.distributor != null){
             movie.distributor = request.body.distributor,
             respuesta = {
-                error = true,
-                codigo = 200,
+                error: true,
+                codigo: 200,
                 mensaje: "La pelicula ha sido actualizada",
-                resultado: movie,
+                resultado: movie
             }
         }
 
         if(request.body.genre != null){
             movie.genre = request.body.genre,
             respuesta = {
-                error = true,
-                codigo = 200,
+                error: true,
+                codigo: 200,
                 mensaje: "La pelicula ha sido actualizada",
                 resultado: movie
             }
@@ -181,30 +200,36 @@ app.put("/pelicula", function(request,response){
     }
     else{
         respuesta = {
-            error = true,
-            codigo = 200,
-            mensaje = "La pelicula ya existe"
+            error: true,
+            codigo:200,
+            mensaje: "La pelicula ya existe",
+            resultado: movie,
         }
     }
     response.send(respuesta)
 });
 
-app.delete("/pelicula", function(response, request){
+app.delete("/pelicula",
+
+function(response, request){
     if( movie != null){
-        profesional = null;
+        movie = null;
         respuesta = {
-            error = true,
-            codigo = 200,
-            mensaje = "La pelicula ha sido borrada"
+            error: true,
+            codigo:200,
+            mensaje: "La pelicula ha sido borrada",
+            resultado: movie
         }
-    }else {
+    }
+    else {
         respuesta = {
-            error = true,
-            codigo = 200,
-            mensaje = "La pelicula no existe"
+            error: true,
+            codigo: 200,
+            mensaje: "La pelicula no existe",
+            ressultado: movie,
         }
     }
     response.send(respuesta);
 });
 
-app.listen(3000);
+app.listen();
