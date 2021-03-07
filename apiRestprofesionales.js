@@ -1,267 +1,273 @@
-const { json } = require('body-parser');
-const express = require('express');
+const { json } = require("body-parser");
+const express = require("express");
 const app = express();
 
-app.use(express.urlencoded({ extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
- 
+
 class Professional {
-constructor(name,age,genre,weight,height,hairColor,eyeColor,race,isRetired,nationality,oscarsNumber,profession,photo){
-this.name = name;
-this.age = age;
-this.genre = genre;
-this.weight = weight;
-this.height = height;
-this.hairColor = hairColor;
-this.eyeColor = eyeColor;
-this.race = race;
-this.isRetired = isRetired;
-this.nationality = nationality;
-this.oscarsNumber = oscarsNumber;
-this.profession = profession;
-}
+  constructor(
+    name,
+    age,
+    genre,
+    weight,
+    height,
+    hairColor,
+    eyeColor,
+    race,
+    isRetired,
+    nationality,
+    oscarsNumber,
+    profession
+  ) {
+    this.name = name;
+    this.age = age;
+    this.genre = genre;
+    this.weight = weight;
+    this.height = height;
+    this.hairColor = hairColor;
+    this.eyeColor = eyeColor;
+    this.race = race;
+    this.isRetired = isRetired;
+    this.nationality = nationality;
+    this.oscarsNumber = oscarsNumber;
+    this.profession = profession;
+  }
 mostrarDatos() {
-console.log(" - Name: " + this.name);
-console.log(" - Age: " + this.age);
-console.log(" - Genre: " + this.genre);
-console.log(" - Weight: " + this.weight);
-console.log(" - Height: " + this.height);
-console.log(" - Hair color: " + this.hairColor);
-console.log(" - Eye color: " + this.eyeColor);
-console.log(" - Race: " + this.race);
-console.log(" - Is retired?: " + this.isRetired);
-console.log(" - Nationality: " + this.nationality);
-console.log(" - Oscars Number: " + this.oscarsNumber);
-console.log(" - Profession: " + this.profession);
-console.log("****************************");
+  return `"\n" Name: "${this.name} "\n" Genre ${this.genre} "\n" Weight: ${this.weight} "\n" Height: ${this.height} "\n" Hair color: ${this.hairColor} "\n" Eye color: ${this.eyeColor} "\n" Race: ${this.race} "\n" Is retired? : ${this.isRetired} "\n" Nationality: ${this.nationality} "\n" Oscar numbers: ${this.oscarsNumber} "\n" Profession: ${this.profession} "\n";`;
 }
+getName() {
+  return this.name;
 }
 
-    //let profesional = null;
-    let profesional1 = new Professional("Robert Downe Jr", 55, "hombre", 70, 1.74, "Moreno", "marron", "Blanco", false, "estadounidense", 2, "actor")
-    let profesional2 = new Professional("Belen Cuesta", 37,"mujer", 52, 1.70, "morena", "marron", "caucasica", false, "espanyola", 0,"actriz")
-    let profesional3= new Professional("Steven Spielberg",74, "hombre",70,1.75, "canoso", "azules", "caucasica", false, "estadounidense",2, "director")
-    let profesional4 = new Professional("Jordan Peele",42, "hombre",76, 1.75,"ocuro", "azules", "negro", false, "estadounidense",0, "guionista" )
+ setName(name) {
+    this.name = name;
+}
 
-    let profesionales = [profesional1,profesional2,profesional3,profesional4]
+ getAge(){
+    return this.age;
+}
 
-let respuesta;
-    
-app.get("/profesionales?id=3", function (request, response){
-        
-    response.send('profesionales'+ request.params.id)
-    if  (profesionales != null){
+ setAge(age){
+    this.age = age;
+}
 
-        respuesta = profesionales;
+ getGenre(){
+    return this.genre;
+}
 
-    } else {
-        respuesta = {
-            error: true, 
-            codigo: 200, 
-            mensaje: 'No hay profesional'
-        }
-    }
-    
-    response.send(respuesta)
+ setGenre(genre){
+    this.genre = genre;
+}
+
+ getWeight(){
+    return this.weight;
+}
+
+ setWeight(weight){
+    this.weight = weight;
+}
+
+ getHeight(){
+    return this.height;
+}
+
+ setHeight(height){
+    this.height = height;
+}
+
+ getHairColor(){
+    return this.hairColor;
+}
+
+ setHairColor(hairColor){
+    this.hairColor = hairColor;
+}
+
+ getEyeColor(){
+    return this.eyeColor;
+}
+
+ setEyeColor(eyeColor) {
+    this.eyeColor = eyeColor;
+}
+
+ getRace(){
+    return this.race;
+}
+
+ setRace(race){
+    this.race = race;
+}
+
+ getIsRetired(){
+    return this.isRetired;
+}
+
+ setIsRetired(isRetired){
+    this.isRetired = isRetired;
+}
+
+ getNationality(){
+    return this.nationality;
+}
+
+ setNationality(nationality) {
+    this.nationality = nationality;
+}
+
+ getOscarsNumber(){
+    return this.oscarsNumber;
+}
+
+ setOscarsNumber(oscarsNumber){
+    this.oscarsNumber = oscarsNumber;
+}
+
+ getProfession(){
+    return this.profession;
+}
+
+ setProfession(profession){
+    this.profession = profession;
+}
+}
+let profesional1 = new Professional(
+  "Robert Downey Jr",
+  55,
+  "hombre",
+  70,
+  1.74,
+  "Moreno",
+  "marron",
+  "Blanco",
+  false,
+  "estadounidense",
+  2,
+  "actor"
+);
+let profesional2 = new Professional(
+  "Belen Cuesta",
+  37,
+  "mujer",
+  52,
+  1.7,
+  "morena",
+  "marron",
+  "caucasica",
+  false,
+  "espanyola",
+  0,
+  "actriz"
+);
+let profesional3 = new Professional(
+  "Steven Spielberg",
+  74,
+  "hombre",
+  70,
+  1.75,
+  "canoso",
+  "azules",
+  "caucasica",
+  false,
+  "estadounidense",
+  2,
+  "director"
+);
+let profesional4 = new Professional(
+  "Jordan Peele",
+  42,
+  "hombre",
+  76,
+  1.75,
+  "ocuro",
+  "azules",
+  "negro",
+  false,
+  "estadounidense",
+  0,
+  "guionista"
+);
+
+let profesionales = [profesional1, profesional2, profesional3, profesional4];
+
+app.get("/profesionales", function (request, response) {
+  let respuesta;
+  let profesional;
+  let id = request.query.id;
+  if (id !== undefined) {
+    profesional = profesionales[id];
+    respuesta = {
+      resultado: profesional,
+    };
+  } else {
+    respuesta = { resultado: profesionales };
+  }
+  response.send(respuesta);
 });
 
-/* 
-app.post("/profesional",function( request,response){
-
-    if (profesional === null)
-    {
-        profesional = { 
-            name: request.body.name,
-            nationality: request.body.nationality,
-            profesion: request.body.profesion,
-            genre: request.body.genre,
-            age: request.body.age,
-            weight: request.body.weight,
-            height: request.body.height,
-            hairColor: request.body.hairColor,
-            eyeColor: request.body.eyeColor,
-            race: request.body.race,
-            oscarsNumber: request.oscarsNumber.number,
-            isRetired: request.body.isRetired,
-        }
-
-        respuesta =  {
-            error: true, 
-            codigo: 200,
-            mensaje: 'Profesional creado', 
-            resultado: profesional,
-        }
-    }
-    else {
-        respuesta= { 
-            error: true, 
-            codigo: 200,
-            mensaje: 'Profesional ya existe', 
-            resultado: null
-        }
-    }
-    response.send(respuesta)
+app.post("/profesionales", function (request, response) {
+  let respuesta;
+  let profesional = new Professional(
+    request.body.name,
+    request.body.age,
+    request.body.genre,
+    request.body.weight,
+    request.body.height,
+    request.body.hairColor,
+    request.body.eyesColor,
+    request.body.race,
+    request.body.isRetired,
+    request.body.nationality,
+    request.body.oscarsNumber,
+    request.body.profession
+  );
+  console.log(profesional);
+  profesionales.push(profesional);
+  respuesta = {
+    mensaje: "Profesional creado",
+    resultado: profesional,
+  };
+  response.send(respuesta);
 });
-    
-app.put("/profesional",
 
-function(request, response){ 
-    
-    if (profesionales != null){
-        
-        if (request.body.name != null){
-            profesional.name = request.body.name; 
-            respuesta = {
-                error: true, 
-                codigo: 200, 
-                mensaje: "El profesional actualizado", 
-                resultado: profesional
-            }
-        }    
-
-        if(request.body.nationality != null){
-
-            profesional.nationality = request.body.nationality;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }
-        }
-        
-        if (request.body.profesional != null){
-            
-            profesional.profesional = request.body.profesional; 
-            respuesta = {
-                error: true, 
-                codigo: 200, 
-                mensaje: "El profesional actualizado", 
-                resultado: profesional
-            }            
-        }
-
-        if (request.body.profesional != null) 
-            {profesional.genre = request.body.genre; 
-            respuesta = {
-                error: true, 
-                codigo: 200, 
-                mensaje: "El profesional actualizado", 
-                resultado: profesional
-            }            
-        }
-        if(request.body.age != null){
-            profesional.age = request.body.age; 
-            respuesta = {
-                error: true, 
-                codigo: 200, 
-                mensaje: "El profesional actualizado", 
-                resultado: profesional
-            }
-        }
-
-        if(request.body.weight != null){
-            profesional.weight = request.body.weight;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }        
-        }
-
-        if(request.body.height != null){
-            profesional.height = request.body.height;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }        
-        }
-
-
-        if(request.body.eyesColor != null){
-            profesional.eyesColor = request.body.eyesColor;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }        
-        }
-
-        if(request.body.hairColor != null){
-            profesional.hairColor = request.body.hairColor;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }        
-        }
-
-        if(request.body.race != null){
-            profesional.race = request.body.race;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }        
-        }
-
-        if(request.body.oscarsNumber != null){
-            profesional.oscarsNumber = request.body.oscarsNumber;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }        
-        }
-
-        if(request.body.isRetired != null){
-            profesional.isRetired = request.body.isRetired;
-            respuesta = {
-                error: true,
-                codigo: 200,
-                mensaje: "El profesional actualizado",
-                resultado: profesional
-            }        
-        }
-
-    }else {
-            respuesta = 
-            {error: true, 
-            codigo: 200, 
-            mensaje: "El profesional no existe",
-            resultado: profesional
-        }
-    }
-
-    response.send(respuesta)
+app.put("/profesionales", function (request, response) {
+  let id = request.query.id;
+  let respuesta;
+  if (id != undefined) {
+      profesionales[id].setName(request.body.name);
+      profesionales[id].setAge(request.body.age);
+      profesionales[id].setGenre(request.body.genre);
+      profesionales[id].setWeight(request.body.weight);
+      profesionales[id].setHeight(request.body.height);
+      profesionales[id].setHairColor(request.body.hairColor);
+      profesionales[id].setEyeColor(request.body.eyesColor);
+      profesionales[id].setRace(request.body.race);
+      profesionales[id].setIsRetired(request.body.isRetired);
+      profesionales[id].setNationality(request.body.nationality);
+      profesionales[id].setOscarsNumber(request.body.oscarsNumber);
+      profesionales[id].setProfession(request.body.profession);
+      respuesta = {
+        mensaje: "El profesional ha sido actualizado",
+        resultado: profesionales[id]
+      }
+   }
+ response.send(respuesta);
 });
- 
-app.delete("/profesional",function(request, response){
-    let respuesta
-    if (profesional != null){
-        profesional = null;
-        respuesta = {
-            error: false, 
-            codigo:200, 
-            mensaje: "Profesional borrado", 
-            respuesta: profesional
-        }
-    }
-    else
-        respuesta = {
-            error: true, 
-            codigo: 200,
-            mensaje: 'Profesional no existe', 
-            resultado: profesional
-        }
-    
-    response.send(respuesta);
-}); */
-app.listen(3000);
+app.delete("/profesionales", function (request, response) {
+  let id = request.query.id;
+  let profesional;
+  let respuesta;
+  if(id != undefined){
+    profesionales[id] = null;
+    respuesta = { 
+      mensaje: "Profesional borrado",
+      resultado: profesionales,
+
+  }
+}
+ response.send(respuesta)
+});
+app.listen();
+
+module.exports = {Professional};
