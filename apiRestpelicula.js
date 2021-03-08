@@ -181,28 +181,22 @@ app.get("/pelicula/guionista", function(request,response){
 
 
 app.post("/pelicula", function(request, response){
-    if(movie === null) {
-        let movie = new Movie(
-            request.body.title,
-            request.body.releaseYear,
-            request.body.nationality,
-            request.body.language,
-            request.body.isMC,
-            request.body.mainCharacterName,
-            request.body.distributor,
-            request.body.genre,
-        );
-        respuesta = {
-          mensaje: "Pelicula creada",
-          resultado: movie,
-        }
-    } 
-    else{
-        respuesta = {
-            mensaje: "Esta peli ya existe",
-            resultado: null
-        }
+   
+    let movie = new Movie(
+        request.body.title,
+        request.body.releaseYear,
+        request.body.nationality,
+        request.body.language,
+        request.body.isMC,
+        request.body.mainCharacterName,
+        request.body.distributor,
+        request.body.genre,
+    );
+    respuesta = {
+        mensaje: "Pelicula creada",
+        resultado: movie,
     }
+    
     response.send(respuesta);
 });
 
