@@ -180,6 +180,7 @@ let actorTrinchera2 = new myProfessional.Professional(
     0,
     "actor"
 );
+
 let actoresTrinchera = [actorTrinchera1, actorTrinchera2]
 let movie2 = new Movie("La trinchera infinita", 2019, actoresTrinchera,"España",directorTrinchera,guionistaTrinchera,"espanyol",false, "Higinio","Netflix", "drama")
 let movies = [movie1,movie2]
@@ -244,7 +245,7 @@ app.post("/peliculas", function(request, response){
         request.body.releaseYear,
         request.body.actors,
         request.body.nationality,
-        request.bodydirectorr,
+        request.body.director,
         request.body.writer,
         request.body.language,
         request.body.isMC,
@@ -306,7 +307,7 @@ app.post("/peliculas/director", function(request, response){
         request.body.oscarsNumber,
         request.body.profession
       );
-    movies[id].director;
+    movies[id].director = director;
     respuesta = {
     mensaje: "Director creado",
     resultado: director,
@@ -333,7 +334,8 @@ app.post("/peliculas/director", function(request, response){
         request.body.oscarsNumber,
         request.body.profession
       );
-    movies[id].writer;
+
+    movies[id].writer = writer;
     respuesta = {
     mensaje: "Guionista creado",
     resultado: writer,

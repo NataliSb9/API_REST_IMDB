@@ -1,3 +1,60 @@
+/* if(request.body.releaseYear != null){
+            movie.releaseYear = request.body.releaseYear,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
+            }
+        }
+
+        if(request.body.nationality != null){
+            movie.nationality = request.body.nationality,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
+            }
+        }
+
+        if(request.body.language != null){
+
+            movie.language = request.body.language,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
+            }
+        }
+
+        if(request.body.isMCU != null){
+            movie.isMCU = request.body.isMCU,
+            respuesta = { 
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
+            }
+        }
+
+        if(request.body.mainCharacterName != null){
+            movie.mainCharacterName = request.body.mainCharacterName,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
+            }
+        }
+
+        if(request.body.distributor != null){
+            movie.distributor = request.body.distributor,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
+            }
+        }
+
+        if(request.body.genre != null){
+            movie.genre = request.body.genre,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: movie
+            }
+      
+       } */
 app.post("/profesional",function( request,response){
 
     if (profesionales === null)
