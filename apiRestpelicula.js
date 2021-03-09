@@ -205,6 +205,7 @@ let director = new myProfessional.Professional(
 );
 
 let guionista = new myProfessional.Professional(
+<<<<<<< HEAD
   "Christopher Markus",
   51,
   "hombre",
@@ -287,6 +288,95 @@ app.get("/pelicula/guionista", function (request, response) {
     respuesta = movie1.getWriter();
   }
   response.send(respuesta);
+=======
+    "Christopher Markus",
+    51,
+    "hombre",
+    74,
+    1.74,
+    "negro",
+    "marron",
+    "Blanco",
+    false,
+    "estadounidense",
+    0,
+    "guionista"
+)
+
+
+function readData(){
+    let ficheroJson=fs.readFileSync("pelicula.json")
+    let peliculaData = JSON.parse(ficheroJson)
+  
+    return peliculaData;
+}
+  
+function writeData(input){
+    let string =JSON.stringify(input)
+    fs.writeFileSync("pelicula.json",string)
+    
+}
+let actores = [actor1, actor2];
+let movieInitial = new Movie("Vengadores",2018,actores,"EEUU",director,guionista,"ingles",true, "Tony Stark","Disney", "accion")
+
+writeData(movieInitial)
+
+app.get("/pelicula", function(request, response){
+    let respuesta;
+    let pelicula = readData()
+    
+    respuesta = pelicula;
+    
+
+  response.send(respuesta);
+});
+
+app.get("/pelicula/actor", function(request,response){
+    let respuesta;
+    let pelicula = readData()
+    let actor;
+    let id = request.query.id;
+    if (id !== undefined) {
+        actor = pelicula.actors[id]
+        respuesta = {
+          resultado: actor,
+        };
+    }else{
+        respuesta = pelicula.actors
+    }
+    response.send(respuesta)
+});
+
+app.get("/pelicula/director", function(request,response){
+    let respuesta;
+    let director;
+    let pelicula = readData()
+    let id = request.query.id;
+    if (id !== undefined) {
+        director = pelicula.director
+        respuesta = {
+          resultado: director,
+        };
+    }else{
+        respuesta = pelicula.director
+    }
+    response.send(respuesta)
+});
+app.get("/pelicula/guionista", function(request,response){
+    let respuesta;
+    let guionista;
+    let pelicula = readData()
+    let id = request.query.id;
+    if (id !== undefined) {
+        guionista = pelicula.writer
+        respuesta = {
+          resultado: pelicula.writer
+        };
+    }else{
+        respuesta =  pelicula.writer
+    }
+    response.send(respuesta)
+>>>>>>> natBranch
 });
 
 app.post("/pelicula", function (request, response) {
@@ -310,10 +400,35 @@ app.post("/pelicula", function (request, response) {
     resultado: movie,
   };
 
+<<<<<<< HEAD
   response.send(respuesta);
 });
 
 app.post("/pelicula/actor", function (request, response) {
+=======
+app.post("/pelicula", function(request, response){
+    let movie = new Movie(
+        request.body.title,
+        request.body.releaseYear,
+        request.body.nationality,
+        request.body.language,
+        request.body.isMC,
+        request.body.mainCharacterName,
+        request.body.distributor,
+        request.body.genre,
+    );
+    
+    respuesta = {
+        mensaje: "Pelicula creada",
+        resultado: movie,
+    }
+    
+    response.send(respuesta);
+});
+
+app.post("/pelicula/actor", function(request, response){
+  let pelicula = readData()  
+>>>>>>> natBranch
   let respuesta;
   let actor = new myProfessional.Professional(
     request.body.name,
@@ -329,7 +444,8 @@ app.post("/pelicula/actor", function (request, response) {
     request.body.oscarsNumber,
     request.body.profession
   );
-  movie1.actors.push(actor);
+  pelicula.actors.push(actor);
+  writeData(pelicula)
   respuesta = {
     mensaje: "Actor creado",
     resultado: actor,
@@ -337,6 +453,7 @@ app.post("/pelicula/actor", function (request, response) {
   response.send(respuesta);
 });
 
+<<<<<<< HEAD
 app.post("/pelicula/director", function (request, response) {
   let respuesta;
   let director = new myProfessional.Professional(
@@ -414,7 +531,134 @@ app.put("/pelicula", function (request, response) {
         }
         if(request.body.genre !== null){movie1.setGenre(request.body.genre),
             respuesta = {resultado: movie1}
+=======
+app.post("/pelicula/director", function(request, response){
+    let pelicula = readData()
+    let respuesta;
+    let director = new myProfessional.Professional(
+      request.body.name,
+      request.body.age,
+      request.body.genre,
+      request.body.weight,
+      request.body.height,
+      request.body.hairColor,
+      request.body.eyesColor,
+      request.body.race,
+      request.body.isRetired,
+      request.body.nationality,
+      request.body.oscarsNumber,
+      request.body.profession
+    );
+    pelicula.director=director;
+    writeData(pelicula)
+    respuesta = {
+      mensaje: "Director creado",
+      resultado: director,
+    };
+    response.send(respuesta);
+  });
+
+  app.post("/pelicula/guionista", function(request, response){
+    let respuesta;
+    let pelicula = readData()
+    let guionista = new myProfessional.Professional(
+      request.body.name,
+      request.body.age,
+      request.body.genre,
+      request.body.weight,
+      request.body.height,
+      request.body.hairColor,
+      request.body.eyesColor,
+      request.body.race,
+      request.body.isRetired,
+      request.body.nationality,
+      request.body.oscarsNumber,
+      request.body.profession
+    );
+    pelicula.writer=guionista;
+    writeData(pelicula)
+    respuesta = {
+      mensaje: "Guionista creado",
+      resultado: guionista,
+    };
+    response.send(respuesta);
+  });
+
+app.put("/pelicula", function(request,response){
+let pelicula = readData()
+    if(pelicula = !null){
+        if(request.body.title != null){
+            pelicula.title = request.body.title,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
         }
+
+        if(request.body.releaseYear != null){
+            pelicula.releaseYear = request.body.releaseYear,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
+        }
+
+        if(request.body.nationality != null){
+            pelicula.nationality = request.body.nationality,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
+        }
+
+        if(request.body.language != null){
+
+            pelicula.language = request.body.language,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
+        }
+
+        if(request.body.isMCU != null){
+            pelicula.isMCU = request.body.isMCU,
+            respuesta = { 
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
+        }
+
+        if(request.body.mainCharacterName != null){
+            pelicula.mainCharacterName = request.body.mainCharacterName,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
+        }
+
+        if(request.body.distributor != null){
+            pelicula.distributor = request.body.distributor,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
+        }
+
+        if(request.body.genre != null){
+            pelicula.genre = request.body.genre,
+            respuesta = {
+                mensaje: "La pelicula ha sido actualizada",
+                resultado: pelicula
+            }
+        }
+    }
+    else{
+        respuesta = {
+            mensaje: "La pelicula ya existe",
+            resultado: movie
+>>>>>>> natBranch
+        }
+        writeData(pelicula)
     }
     response.send(respuesta);
 })
@@ -422,8 +666,10 @@ app.put("/pelicula", function (request, response) {
 
 app.put("/pelicula/actor", function (request, response) {
   let id = request.query.id;
+  let pelicula = readData()
   let respuesta;
   if (id != undefined) {
+<<<<<<< HEAD
     movie1.actors[id].setName(request.body.name);
     movie1.actors[id].setAge(request.body.age);
     movie1.actors[id].setGenre(request.body.genre);
@@ -506,20 +752,120 @@ app.delete("/pelicula", function (response, request) {
     };
   }
   response.send(respuesta);
+=======
+      pelicula.actors[id].name = request.body.name;
+      pelicula.actors[id].age = request.body.age;
+      pelicula.actors[id].genre = request.body.genre;
+      pelicula.actors[id].weight = request.body.weight;
+      pelicula.actors[id].height = request.body.height;
+      pelicula.actors[id].hairColor=request.body.hairColor;
+      pelicula.actors[id].eyeColor=request.body.eyesColor;
+      pelicula.actors[id].race=request.body.race;
+      pelicula.actors[id].isRetired=request.body.isRetired;
+      pelicula.actors[id].nationality=request.body.nationality;
+      pelicula.actors[id].oscarsNumber=request.body.oscarsNumber;
+      pelicula.actors[id].profession=request.body.profession;
+      writeData(pelicula)
+      respuesta = {
+        mensaje: "El actor ha sido actualizado",
+        resultado: pelicula.actors[id]
+      }
+   }
+ response.send(respuesta);
+});
+
+app.put("/pelicula/director",function(request,response){
+    let respuesta;
+    let pelicula = readData()
+    if (director!= undefined) {
+        pelicula.writer.setName(request.body.name);
+        pelicula.writer.setAge(request.body.age);
+        pelicula.writer.setGenre(request.body.genre);
+        pelicula.writer.setWeight(request.body.weight);
+        pelicula.writer.setHeight(request.body.height);
+        pelicula.writer.setHairColor(request.body.hairColor);
+        pelicula.writer.setEyeColor(request.body.eyesColor);
+        pelicula.writer.setRace(request.body.race);
+        pelicula.writer.setIsRetired(request.body.isRetired);
+        pelicula.writer.setNationality(request.body.nationality);
+        pelicula.writer.setOscarsNumber(request.body.oscarsNumber);
+        pelicula.writer.setProfession(request.body.profession);
+        writeData(pelicula)
+        respuesta = {
+          mensaje: "El director ha sido actualizado",
+          resultado: pelicula.writer
+        }
+     }
+   response.send(respuesta);
+})
+
+app.put("/pelicula/guionista",function(request,response){
+    let respuesta;
+    let pelicula = readData()
+    if (id != undefined) {
+        pelicula.writer.name =  request.body.name;
+        pelicula.writer.age = request.body.age;
+        pelicula.writer.genre=request.body.genre;
+        pelicula.writer.weight=request.body.weight;
+        pelicula.writer.height=request.body.height;
+        pelicula.writer.hairColor=request.body.hairColor;
+        pelicula.writer.eyeColor=request.body.eyesColor;
+        pelicula.writer.race= request.body.race;
+        pelicula.writer.isRetired=request.body.isRetired;
+        pelicula.writer.nationality=request.body.nationality;
+        pelicula.writer.oscarsNumber=request.body.oscarsNumber;
+        pelicula.writer.profession=request.body.profession;
+        writeData(pelicula)
+        respuesta = {
+          mensaje: "El writer ha sido actualizado",
+          resultado: pelicula.writer
+        }
+     }
+   response.send(respuesta);
+})
+
+app.delete("/pelicula",
+function(response, request){
+    let pelicula = readData()
+    if( pelicula != null){
+        pelicula = null;
+        respuesta = {
+            mensaje: "La pelicula ha sido borrada",
+        }
+    }
+    else {
+        respuesta = {
+            mensaje: "La pelicula no existe",
+            resultado: pelicula,
+        }
+    }
+    response.send(respuesta);
+>>>>>>> natBranch
 });
 app.delete("/pelicula/actor", function (request, response) {
   let id = request.query.id;
+  let pelicula = readData()
   let respuesta;
+<<<<<<< HEAD
   if (id != undefined) {
     movie1.actors.splice(id, 1);
     respuesta = {
       mensaje: "Actor borrado",
       resultado: movie1.getActors(),
     };
+=======
+  if(id != undefined){
+    pelicula.actors.splice(id,1);
+    writeData(pelicula)
+    respuesta = { 
+      mensaje: "Actor borrado",
+      resultado: pelicula.actors,
+>>>>>>> natBranch
   }
   response.send(respuesta);
 });
 
+<<<<<<< HEAD
 app.delete("/pelicula/director", function (request, response) {
   let respuesta;
   if (id != undefined) {
@@ -539,6 +885,31 @@ app.delete("/pelicula/guionista", function (request, response) {
       mensaje: "guionista borrado",
       resultado: movie1,
     };
+=======
+app.delete("/pelicula/director",function(request, response){
+    let respuesta;
+    let pelicula = readData()
+    if(id != undefined){
+      pelicula.director = null;
+      writeData(pelicula)
+      respuesta = { 
+        mensaje: "Director borrado",
+        resultado: pelicula
+    }
+  }
+   response.send(respuesta)
+})
+app.delete("/pelicula/guionista",function(request, response){
+    let respuesta;
+    let pelicula = readData()
+    if(id != undefined){
+      pelicula.writer = null;
+      writeData(pelicula)
+      respuesta = { 
+        mensaje: "guionista borrado",
+        resultado: pelicula
+    }
+>>>>>>> natBranch
   }
   response.send(respuesta);
 });

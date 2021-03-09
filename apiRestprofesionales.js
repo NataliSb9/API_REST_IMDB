@@ -1,6 +1,7 @@
 const { json } = require("body-parser");
 const express = require("express");
 const app = express();
+const fs = require('fs');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -33,104 +34,104 @@ class Professional {
     this.oscarsNumber = oscarsNumber;
     this.profession = profession;
   }
-mostrarDatos() {
-  return `"\n" Name: "${this.name} "\n" Genre ${this.genre} "\n" Weight: ${this.weight} "\n" Height: ${this.height} "\n" Hair color: ${this.hairColor} "\n" Eye color: ${this.eyeColor} "\n" Race: ${this.race} "\n" Is retired? : ${this.isRetired} "\n" Nationality: ${this.nationality} "\n" Oscar numbers: ${this.oscarsNumber} "\n" Profession: ${this.profession} "\n";`;
-}
-getName() {
-  return this.name;
-}
+  mostrarDatos() {
+    return `"\n" Name: "${this.name} "\n" Genre ${this.genre} "\n" Weight: ${this.weight} "\n" Height: ${this.height} "\n" Hair color: ${this.hairColor} "\n" Eye color: ${this.eyeColor} "\n" Race: ${this.race} "\n" Is retired? : ${this.isRetired} "\n" Nationality: ${this.nationality} "\n" Oscar numbers: ${this.oscarsNumber} "\n" Profession: ${this.profession} "\n";`;
+  }
+  getName() {
+    return this.name;
+  }
 
- setName(name) {
+  setName(name) {
     this.name = name;
-}
+  }
 
- getAge(){
+  getAge() {
     return this.age;
-}
+  }
 
- setAge(age){
+  setAge(age) {
     this.age = age;
-}
+  }
 
- getGenre(){
+  getGenre() {
     return this.genre;
-}
+  }
 
- setGenre(genre){
+  setGenre(genre) {
     this.genre = genre;
-}
+  }
 
- getWeight(){
+  getWeight() {
     return this.weight;
-}
+  }
 
- setWeight(weight){
+  setWeight(weight) {
     this.weight = weight;
-}
+  }
 
- getHeight(){
+  getHeight() {
     return this.height;
-}
+  }
 
- setHeight(height){
+  setHeight(height) {
     this.height = height;
-}
+  }
 
- getHairColor(){
+  getHairColor() {
     return this.hairColor;
-}
+  }
 
- setHairColor(hairColor){
+  setHairColor(hairColor) {
     this.hairColor = hairColor;
-}
+  }
 
- getEyeColor(){
+  getEyeColor() {
     return this.eyeColor;
-}
+  }
 
- setEyeColor(eyeColor) {
+  setEyeColor(eyeColor) {
     this.eyeColor = eyeColor;
-}
+  }
 
- getRace(){
+  getRace() {
     return this.race;
-}
+  }
 
- setRace(race){
+  setRace(race) {
     this.race = race;
-}
+  }
 
- getIsRetired(){
+  getIsRetired() {
     return this.isRetired;
-}
+  }
 
- setIsRetired(isRetired){
+  setIsRetired(isRetired) {
     this.isRetired = isRetired;
-}
+  }
 
- getNationality(){
+  getNationality() {
     return this.nationality;
-}
+  }
 
- setNationality(nationality) {
+  setNationality(nationality) {
     this.nationality = nationality;
-}
+  }
 
- getOscarsNumber(){
+  getOscarsNumber() {
     return this.oscarsNumber;
-}
+  }
 
- setOscarsNumber(oscarsNumber){
+  setOscarsNumber(oscarsNumber) {
     this.oscarsNumber = oscarsNumber;
-}
+  }
 
- getProfession(){
+  getProfession() {
     return this.profession;
-}
+  }
 
- setProfession(profession){
+  setProfession(profession) {
     this.profession = profession;
-}
+  }
 }
 let profesional1 = new Professional(
   "Robert Downey Jr",
@@ -189,11 +190,28 @@ let profesional4 = new Professional(
   "guionista"
 );
 
-let profesionales = [profesional1, profesional2, profesional3, profesional4];
+let profesionalesI = [profesional1, profesional2, profesional3, profesional4];
+profesionalesI= JSON.stringify(profesionalesI)
+fs.writeFileSync("profesionales.json", profesionalesI)
 
+
+
+function readData(){
+  let ficheroJson=fs.readFileSync("profesionales.json")
+  let profesionalesData = JSON.parse(ficheroJson)
+
+  return profesionalesData;
+}
+
+function writeData(input){
+  let string =JSON.stringify(input)
+  fs.writeFileSync("profesionales.json",string)
+  
+}
 app.get("/profesionales", function (request, response) {
   let respuesta;
   let profesional;
+  let profesionales = readData()
   let id = request.query.id;
   if (id !== undefined) {
     profesional = profesionales[id];
@@ -208,6 +226,7 @@ app.get("/profesionales", function (request, response) {
 
 app.post("/profesionales", function (request, response) {
   let respuesta;
+  let profesionales = readData();
   let profesional = new Professional(
     request.body.name,
     request.body.age,
@@ -222,8 +241,10 @@ app.post("/profesionales", function (request, response) {
     request.body.oscarsNumber,
     request.body.profession
   );
-  console.log(profesional);
+  
   profesionales.push(profesional);
+
+  writeData(profesionales)
   respuesta = {
     mensaje: "Profesional creado",
     resultado: profesional,
@@ -233,41 +254,43 @@ app.post("/profesionales", function (request, response) {
 
 app.put("/profesionales", function (request, response) {
   let id = request.query.id;
+  let profesionales = readData()
   let respuesta;
   if (id != undefined) {
-      profesionales[id].setName(request.body.name);
-      profesionales[id].setAge(request.body.age);
-      profesionales[id].setGenre(request.body.genre);
-      profesionales[id].setWeight(request.body.weight);
-      profesionales[id].setHeight(request.body.height);
-      profesionales[id].setHairColor(request.body.hairColor);
-      profesionales[id].setEyeColor(request.body.eyesColor);
-      profesionales[id].setRace(request.body.race);
-      profesionales[id].setIsRetired(request.body.isRetired);
-      profesionales[id].setNationality(request.body.nationality);
-      profesionales[id].setOscarsNumber(request.body.oscarsNumber);
-      profesionales[id].setProfession(request.body.profession);
-      respuesta = {
-        mensaje: "El profesional ha sido actualizado",
-        resultado: profesionales[id]
-      }
-   }
- response.send(respuesta);
+    profesionales[id].name =request.body.name;
+    profesionales[id].age  = request.body.age;
+    profesionales[id].genre = request.body.genre;
+    profesionales[id].weight = request.body.weight;
+    profesionales[id].height = request.body.height;
+    profesionales[id].hairColor = request.body.hairColor;
+    profesionales[id].eyeColor = request.body.eyesColor;
+    profesionales[id].race = request.body.race;
+    profesionales[id].isRetired =request.body.isRetired;
+    profesionales[id].nationality = request.body.nationality;
+    profesionales[id].oscarsNumber =request.body.oscarsNumber;
+    profesionales[id].profession = request.body.profession;
+    writeData(profesionales)
+    respuesta = {
+      mensaje: "El profesional ha sido actualizado",
+      resultado: profesionales[id],
+    };
+  }
+  response.send(respuesta);
 });
 app.delete("/profesionales", function (request, response) {
   let id = request.query.id;
-  let profesional;
+  let profesionales = readData()
   let respuesta;
-  if(id != undefined){
-    profesionales[id] = null;
-    respuesta = { 
+  if (id != undefined) {
+    profesionales.splice(id,1);
+    respuesta = {
       mensaje: "Profesional borrado",
       resultado: profesionales,
-
+    };
   }
-}
- response.send(respuesta)
+  writeData(profesionales)
+  response.send(respuesta);
 });
-app.listen();
+app.listen(3000);
 
-module.exports = {Professional};
+module.exports = { Professional };
