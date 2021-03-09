@@ -180,22 +180,38 @@ let actorTrinchera2 = new myProfessional.Professional(
     0,
     "actor"
 );
+
+function readData(){
+  let ficheroJson=fs.readFileSync("profesionales.json")
+  let profesionalesData = JSON.parse(ficheroJson)
+
+  return profesionalesData;
+}
+
+function writeData(input){
+  let string =JSON.stringify(input)
+  fs.writeFileSync("profesionales.json",string)
+  
+}
 let actoresTrinchera = [actorTrinchera1, actorTrinchera2]
 let movie2 = new Movie("La trinchera infinita", 2019, actoresTrinchera,"España",directorTrinchera,guionistaTrinchera,"espanyol",false, "Higinio","Netflix", "drama")
 let movies = [movie1,movie2]
 
+let peliculasFormato= JSON.stringify(movies)
+fs.writeFileSync("peliculas.json", peliculasFormato)
+
 app.get("/peliculas", function(request,response){
+    let peliculas = readData();
     let respuesta;
-    let movie;
     let id = request.query.id;
     if (id !== undefined) {
-        movie = movies[id]
+        peliculas = peliculas[id]
         respuesta = {
-          resultado: movies[id],
+          resultado: peliculas[id],
         };
     }else{
         respuesta ={
-            resultado: movies
+            resultado: peliculas
         }
     }
     response.send(respuesta)
@@ -203,9 +219,10 @@ app.get("/peliculas", function(request,response){
 
 app.get("/peliculas/actor", function(request,response){
     let respuesta;
+    let peliculas = readData();
     let id = request.query.id;
     if (id !== undefined) {
-        let actores = movies[id].actors
+        let actores = peliculas[id].actors
         respuesta = {
           resultado: actores,
         };
@@ -214,10 +231,11 @@ app.get("/peliculas/actor", function(request,response){
 });
 
 app.get("/peliculas/director", function(request,response){
+    let peliculas = readData();
     let respuesta;
     let id = request.query.id;
     if (id !== undefined) {
-        let director = movies[id].director
+        let director = peliculas[id].director
         respuesta = {
           resultado: director,
         };
@@ -226,10 +244,11 @@ app.get("/peliculas/director", function(request,response){
 });
 
 app.get("/peliculas/guionista", function(request,response){
+    let peliculas = readData();
     let respuesta;
     let id = request.query.id;
     if (id !== undefined) {
-        let guionista = movies[id].writer
+        let guionista = peliculas[id].writer
         respuesta = {
           resultado: guionista,
         };
@@ -239,6 +258,7 @@ app.get("/peliculas/guionista", function(request,response){
 
 
 app.post("/peliculas", function(request, response){
+    let peliculas = readData();
     let movie = new Movie(
         request.body.title,
         request.body.releaseYear,
@@ -252,7 +272,8 @@ app.post("/peliculas", function(request, response){
         request.body.distributor,
         request.body.genre,
     );
-    movies.push(movie)
+    peliculas.push(movie)
+    writeData(peliculas)
     respuesta = {
         mensaje: "Pelicula creada",
         resultado: movie,
@@ -263,6 +284,7 @@ app.post("/peliculas", function(request, response){
 
 app.post("/peliculas/actor", function(request, response){
   let respuesta;
+  let peliculas = readData();
   let id = request.query.id;
   if (id !== undefined){
     let actor = new myProfessional.Professional(
@@ -279,7 +301,8 @@ app.post("/peliculas/actor", function(request, response){
       request.body.oscarsNumber,
       request.body.profession
     );
-    movies[id].actors.push(actor);
+    peliculas[id].actors.push(actor);
+    writeData(peliculas);
     respuesta = {
     mensaje: "Actor creado",
     resultado: actor,
@@ -290,6 +313,7 @@ app.post("/peliculas/actor", function(request, response){
 
 app.post("/peliculas/director", function(request, response){
     let respuesta;
+    let peliculas = readData();
     let id = request.query.id;
     if (id !== undefined){
       let director = new myProfessional.Professional(
@@ -306,7 +330,8 @@ app.post("/peliculas/director", function(request, response){
         request.body.oscarsNumber,
         request.body.profession
       );
-    movies[id].director;
+    peliculas[id].director;
+    writeData(peliculas)
     respuesta = {
     mensaje: "Director creado",
     resultado: director,
@@ -317,6 +342,7 @@ app.post("/peliculas/director", function(request, response){
 
   app.post("/peliculas/guionista", function(request, response){
     let respuesta;
+    let peliculas = readData();
     let id = request.query.id;
     if (id !== undefined){
       let writer = new myProfessional.Professional(
@@ -333,7 +359,8 @@ app.post("/peliculas/director", function(request, response){
         request.body.oscarsNumber,
         request.body.profession
       );
-    movies[id].writer;
+    peliculas[id].writer;
+    writeData(peliculas)
     respuesta = {
     mensaje: "Guionista creado",
     resultado: writer,
@@ -346,24 +373,25 @@ app.post("/peliculas/director", function(request, response){
 app.put("/peliculas/actor",function(request,response){
   let id = request.query.id;
   let idA = request.query.idA;
-
+  let peliculas = readData();
   let respuesta;
   if (id != undefined && idA != undefined) {
-      movies[id].actors[idA].setName(request.body.name);
-      movies[id].actors[idA].setAge(request.body.age);
-      movies[id].actors[idA].setGenre(request.body.genre);
-      movies[id].actors[idA].setWeight(request.body.weight);
-      movies[id].actors[idA].setHeight(request.body.height);
-      movies[id].actors[idA].setHairColor(request.body.hairColor);
-      movies[id].actors[idA].setEyeColor(request.body.eyesColor);
-      movies[id].actors[idA].setRace(request.body.race);
-      movies[id].actors[idA].setIsRetired(request.body.isRetired);
-      movies[id].actors[idA].setNationality(request.body.nationality);
-      movies[id].actors[idA].setOscarsNumber(request.body.oscarsNumber);
-      movies[id].actors[idA].setProfession(request.body.profession);
+      peliculas[id].actors[idA].name= request.body.name;
+      pelicula[id].actors[idA].age= request.body.age;
+      pelicula[id].actors[idA].genre=request.body.genre;
+      pelicula[id].actors[idA].weight= request.body.weight;
+      pelicula[id].actors[idA].height=request.body.height;
+      pelicula[id].actors[idA].hairColor=request.body.hairColor;
+      peliculas[id].actors[idA].eyeColor=request.body.eyesColor;
+      peliculas[id].actors[idA].race= request.body.race;
+      peliculas[id].actors[idA].retired=request.body.isRetired;
+      peliculas[id].actors[idA].nationality=request.body.nationality;
+      peliculas[id].actors[idA].oscarsNumber=request.body.oscarsNumber;
+      peliculas[id].actors[idA].profession=request.body.profession;
+      writeData(peliculas)
       respuesta = {
         mensaje: "El actor ha sido actualizado",
-        resultado: movies[id].actors[id]
+        resultado: peliculas[id].actors[id]
       }
    }
  response.send(respuesta);
@@ -371,21 +399,23 @@ app.put("/peliculas/actor",function(request,response){
 
 app.put("/peliculas/director",function(request,response){
     let id = request.query.id;
+    let peliculas= readData()
     let respuesta;
     if (id != undefined) {
-      let director = movies[id].director
-        director.setName(request.body.name);
-        director.setAge(request.body.age);
-        director.setGenre(request.body.genre);
-        director.setWeight(request.body.weight);
-        director.setHeight(request.body.height);
-        director.setHairColor(request.body.hairColor);
-        director.setEyeColor(request.body.eyesColor);
-        director.setRace(request.body.race);
-        director.setIsRetired(request.body.isRetired);
-        director.setNationality(request.body.nationality);
-        director.setOscarsNumber(request.body.oscarsNumber);
-        director.setProfession(request.body.profession);
+      let director = peliculas[id].director
+        director.name=request.body.name;
+        director.age=request.body.age;
+        director.genre=request.body.genre;
+        director.weight= request.body.weight;
+        director.height=request.body.height;
+        director.hairColor=request.body.hairColor;
+        director.eyeColor=request.body.eyesColor;
+        director.race=request.body.race;
+        director.isRetired=request.body.isRetired;
+        director.nationality=request.body.nationality;
+        director.oscarsNumber=request.body.oscarsNumber;
+        director.profession=request.body.profession;
+        writeData(peliculas)
         respuesta = {
           mensaje: "El director ha sido actualizado",
           resultado: director
@@ -396,20 +426,22 @@ app.put("/peliculas/director",function(request,response){
 
 app.put("/peliculas/guionista",function(request,response){
     let respuesta;
+    let peliculas= readData()
     if (id != undefined) {
-      let writer = movies[id].writer
-        writer.setName(request.body.name);
-        writer.setAge(request.body.age);
-        writer.setGenre(request.body.genre);
-        writer.setWeight(request.body.weight);
-        writer.setHeight(request.body.height);
-        writer.setHairColor(request.body.hairColor);
-        writer.setEyeColor(request.body.eyesColor);
-        writer.setRace(request.body.race);
-        writer.setIsRetired(request.body.isRetired);
-        writer.setNationality(request.body.nationality);
-        writer.setOscarsNumber(request.body.oscarsNumber);
-        writerr.setProfession(request.body.profession);
+      let writer = peliculas[id].writer
+        writer.name=request.body.name;
+        writer.age=request.body.age;
+        writer.genre=request.body.genre;
+        writer.weight= request.body.weight;
+        writer.height=request.body.height;
+        writer.hairColor=request.body.hairColor;
+        writer.eyeColor=request.body.eyesColor;
+        writer.race=request.body.race;
+        writer.isRetired=request.body.isRetired;
+        writer.nationality=request.body.nationality;
+        writer.oscarsNumber=request.body.oscarsNumber;
+        writer.profession=request.body.profession;
+        writeData(peliculas)
         respuesta = {
           mensaje: "El guionista ha sido actualizado",
           resultado: writer
@@ -419,25 +451,29 @@ app.put("/peliculas/guionista",function(request,response){
 })
 
 app.delete("/peliculas",function(request,response){
+  let peliculas= readData()
   let id = request.query.id;
-    if( id!= undefined){
-        movies[id] = null;
-        respuesta = {
-            mensaje: "La pelicula ha sido borrada",
-            resultado: movies
-        }
+  if( id!= undefined){
+      peliculas.splice(id,1);
+      writeData(peliculas)
+      respuesta = {
+        mensaje: "La pelicula ha sido borrada",
+        resultado: peliculas
+      } 
     }
-    response.send(respuesta);
+  response.send(respuesta);
 });
 app.delete("/peliculas/actor",function(request, response){
+  let peliculas= readData()
   let id = request.query.id;
   let idA = request.query.idA;
   let respuesta;
   if(id != undefined){
-    movies[id].actors.splice(idA,1);
+    peliculas[id].actors.splice(idA,1);
+    writeData(peliculas)
     respuesta = { 
       mensaje: "Actor borrado",
-      resultado: movies[id]
+      resultado: peliculas[id]
     }
   }
  response.send(respuesta)
@@ -445,27 +481,31 @@ app.delete("/peliculas/actor",function(request, response){
 
 app.delete("/peliculas/director",function(request, response){
     let respuesta;
+    let peliculas= readData()
     let id = request.query.id;
     if(id != undefined){
-      movies[id].writer = null;
+      peliculas[id].writer = null;
+      writeData(peliculas)
       respuesta = { 
         mensaje: "Director borrado",
-        resultado: movies,
-    }
+        resultado: peliculas,
+      }
   }
    response.send(respuesta)
 })
 app.delete("/peliculas/guionista",function(request, response){
     let respuesta;
+    let peliculas= readData()
     let id = request.query.id;
 
     if(id != undefined){
-      movies.writer = null;
+      peliculas.writer = null;
+      writeData(peliculas)
       respuesta = { 
         mensaje: "guionista borrado",
-        resultado: movies,
+        resultado: peliculas,
     }
   }
    response.send(respuesta)
 })
-app.listen(3000);
+app.listen();
